@@ -1,6 +1,6 @@
 {
-    "name": "Photo Journal",
-    "short_name": "Journal",
+    "name": "IHeartFoood",
+    "short_name": "Foood",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
