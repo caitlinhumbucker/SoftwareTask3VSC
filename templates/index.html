@@ -2,24 +2,7 @@
 {% block content %} 
 {% if session['user_id'] %}
 
-<form action="{{url_for('add_entry')}}" method="post" enctype="multipart/form-data">
-    <div>
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" required>
-    </div>
-
-    <div>
-        <label for="description">Description:</label>
-        <textarea id="description" name="description"></textarea>
-    </div>
-
-    <div>
-        <label for="image">Photo:</label>
-        <input type="file" id="image" name="image" accept="image/*" required>
-    </div>
-
-    <button type="submit">Add Entry</button>
-</form>
+<h1 class="centered">Ingredients</h1>
 
 <div class="entries-grid">
 {% for entry in entries %}
@@ -76,6 +59,25 @@
 
 {% endfor %}
 </div>
+
+<form action="{{url_for('add_entry')}}" method="post" enctype="multipart/form-data">
+    <div>
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+    </div>
+
+    <div>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description"></textarea>
+    </div>
+
+    <div>
+        <label for="image">Photo:</label>
+        <input type="file" id="image" name="image" accept="image/*" required>
+    </div>
+
+    <button type="submit">Add Entry</button>
+</form>
 
 <script>
 function showEditForm(entryId) {
