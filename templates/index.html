@@ -21,6 +21,7 @@
     <button type="submit">Add Entry</button>
 </form>
 
+<div class="entries-grid">
 {% for entry in entries %}
 
 <div class="entry">
@@ -74,6 +75,7 @@
 </div>
 
 {% endfor %}
+</div>
 
 <script>
 function showEditForm(entryId) {

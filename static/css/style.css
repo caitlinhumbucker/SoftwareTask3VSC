@@ -24,7 +24,8 @@ body {
 
 /* Main content area */
 .main {
-    width: 800px; /* Set a fixed width for the main content area */
+    width: 900px; /* Set a fixed width for the main content area */
+    max-width:1200px;
     margin: 0 auto; /* Centre the content on the page */
     padding: 20px; /* Add padding inside the main content area */
 }
@@ -163,4 +164,11 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.entries-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 20px;
 }
