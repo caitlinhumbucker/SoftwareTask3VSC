@@ -13,7 +13,16 @@
     <div id="display-{{ entry.id }}">
         <h3>{{ entry.title }}</h3>
         <p>{{ entry.description }}</p>
-
+        <p>{{ entry.quantity }}</p>
+        <p>{{ entry.unit }}</p>
+        <p>{{ entry.expiry_date }}</p>
+        <p>{{ entry.calories }}</p>
+        <p>{{ entry.protein }}</p>
+        <p>{{ entry.sugar }}</p>
+        <p>{{ entry.sodium }}</p>
+        <p>{{ entry.saturated_fat }}</p>
+        
+        
         <div class="entry-footer">
             <span class="date">{{ entry.created_at }}</span>
             <div class="entry-actions">
@@ -60,7 +69,7 @@
 {% endfor %}
 </div>
 
-<div class="entry"
+<div class="entry">
 
     <form action="{{url_for('add_entry')}}" method="post" enctype="multipart/form-data">
         <div>
@@ -76,29 +85,44 @@
             <textarea id="description" name="description"></textarea>
         </div>
 
-        <div> {# every nutrional related statistic will be programmed to calculate a score out of 5}
-            <label for="description">Calories (per 100g):</label>
-            <textarea id="description" name="description"></textarea>
+        <div> {# every nutrional related statistic will be programmed to calculate a score out of 5#}
+            <label for="quantity">Quantity:</label>
+            <number id="quantity" name="quantity"></number>
         </div>
 
-        <div> {# every nutrional related statistic will be programmed to calculate a score out of 5}
-            <label for="description">Protein (g):</label>
-            <textarea id="description" name="description"></textarea>
+        <div> {# every nutrional related statistic will be programmed to calculate a score out of 5#}
+            <label for="unit">Unit: </label>
+            <number id="unit" name="unit"></number>
         </div>
 
-        <div> {# every nutrional related statistic will be programmed to calculate a score out of 5}
-            <label for="description">Sugar (g):</label>
-            <textarea id="description" name="description"></textarea>
+        <div> {# every nutrional related statistic will be programmed to calculate a score out of 5#}
+            <label for="expiry">Expiry date: </label>
+            <number id="expiry_date" name="expiry_date"></number>
         </div>
 
-        <div> {# every nutrional related statistic will be programmed to calculate a score out of 5}
-            <label for="description">Sodium/salt (mg):</label>
-            <textarea id="description" name="description"></textarea>
+        <div> {# every nutrional related statistic will be programmed to calculate a score out of 5#}
+            <label for="calories">Calories (per 100g):</label>
+            <number id="calories" name="calories"></number>
         </div>
 
-        <div> {# every nutrional related statistic will be programmed to calculate a score out of 5}
-            <label for="description">Saturated Fat (g):</label>
-            <textarea id="description" name="description"></textarea>
+        <div> {# every nutrional related statistic will be programmed to calculate a score out of 5#}
+            <label for="protein">Protein (g):</label>
+            <number id="protein" name="protein"></number>
+        </div>
+
+        <div> {# every nutrional related statistic will be programmed to calculate a score out of 5#}
+            <label for="sugar">Sugar (g):</label>
+            <number id="sugar" name="sugar"></number>
+        </div>
+
+        <div> {# every nutrional related statistic will be programmed to calculate a score out of 5#}
+            <label for="sodium">Sodium/salt (mg):</label>
+            <number id="sodium" name="sodium"></number>
+        </div>
+
+        <div> {# every nutrional related statistic will be programmed to calculate a score out of 5#}
+            <label for="saturated">Saturated Fat (g):</label>
+            <number id="saturated_fat" name="saturated_fat"></number>
         </div>
 
         <div>

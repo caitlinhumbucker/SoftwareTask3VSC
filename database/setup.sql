@@ -9,12 +9,16 @@ CREATE TABLE IF NOT EXISTS entries (
     user_id INTEGER NOT NULL,
     title TEXT NOT NULL,
     description TEXT,
+    quantity REAL,
+    unit TEXT,
+    expiry_date TEXT,
     calories REAL,
     protein REAL,
     sugar REAL,
     sodium REAL,
-    saturated fat REAL,
+    saturated_fat REAL,
+    nutrition_score REAL,
     image_path TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users (id)
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
