@@ -229,4 +229,19 @@ def delete_entry(entry_id):
     flash('Entry deleted successfully!', 'success')
     return redirect(url_for('index'))
 
-app.run(debug=True, port=5000)
+@app.route('/entry/<int:entry_id>')
+def entry_detail(entry_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    db = get_db()
+    entry = db.execute(
+        'SELECT * FROM entries WHERE id = ? AND user_id = ?',
+        (entry_id, session['user_id'])
+    ).fetchone()
+
+    if entry:
+        return render_template('details.html', entry=entry)
+    else:
+        flash("Ingredient entry not found!", "error")
+        return redirect(url_for('index'))
