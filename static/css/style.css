@@ -176,3 +176,17 @@ button {
 .centered {
     text-align: center;
 }
+
+.add-game-button button {
+    padding: 8px 16px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.add-game-button button:hover {
+    background-color: #0056b3;
+}
