@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS entries (
     title TEXT NOT NULL,
     description TEXT,
     quantity REAL,
-    unit TEXT,
     expiry_date TEXT,
     calories REAL,
     protein REAL,
