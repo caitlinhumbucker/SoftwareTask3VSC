@@ -92,18 +92,18 @@ def building():
     
     return render_template('building.html')
 
-@app.route('/add_entry', methods=[ 'POST' ])
+@app.route('/add_entry', methods=['POST'])
 def add_entry():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     
     if 'image' not in request.files:
-        flash( 'No image uploaded', 'error')
-        return redirect(url_for ('index'))
+        flash('No image uploaded', 'error')
+        return redirect(url_for('index'))
     
-    file = request. files[ 'image']
+    file = request.files['image']
     if file.filename == '':
-        flash( 'No image selected', 'error')
+        flash('No image selected', 'error')
         return redirect(url_for('index'))
     
     if file and allowed_file(file.filename):
@@ -113,23 +113,32 @@ def add_entry():
 
         db = get_db()
         db.execute('''
-            INSERT INTO entries (user_id, title, description, image_path)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO entries (
+                user_id, title, description, image_path,
+                quantity, expiry_date, calories, protein,
+                sugar, sodium, saturated_fat
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
             session['user_id'],
             request.form['title'],
             request.form['description'],
-            f"uploads/{filename}"
+            f"uploads/{filename}",
+            request.form.get('quantity'),
+            request.form.get('expiry_date'),
+            request.form.get('calories'),
+            request.form.get('protein'),
+            request.form.get('sugar'),
+            request.form.get('sodium'),
+            request.form.get('saturated_fat')
         ))
         db.commit()
         flash('Entry added successfully!', 'success')
-
         return redirect(url_for('index'))
     
     else:
         flash('Invalid file type', 'error')
         return redirect(url_for('index'))
-
 @app.route('/offline')
 def offline():
     response = make_response(render_template('offline.html'))
@@ -203,12 +212,14 @@ def edit_entry(entry_id):
     flash('Entry updated successfully!', 'success')
     return redirect(url_for('index'))
 
+# Route to delete a specific ingredient entry
 @app.route('/delete_entry/<int:entry_id>', methods=['POST'])
 def delete_entry(entry_id):
     if 'user_id' not in session:
         return redirect(url_for('login'))
     
     db = get_db()
+    # Fetch the entry, make sure it belongs to the logged in user
     entry = db.execute(
         'SELECT * FROM entries WHERE id = ? AND user_id = ?',
         (entry_id, session['user_id'])
@@ -236,12 +247,14 @@ def delete_entry(entry_id):
     flash('Entry deleted successfully!', 'success')
     return redirect(url_for('index'))
 
+# Route to display the full details of a singular ingredient
 @app.route('/entry/<int:entry_id>')
 def entry_detail(entry_id):
     if 'user_id' not in session:
         return redirect(url_for('login'))
 
     db = get_db()
+    # Fetch the entry, making sure it blongs to the logged in user
     entry = db.execute(
         'SELECT * FROM entries WHERE id = ? AND user_id = ?',
         (entry_id, session['user_id'])

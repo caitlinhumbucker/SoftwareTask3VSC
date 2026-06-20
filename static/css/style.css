@@ -35,6 +35,18 @@ body {
     margin-right: 10px;
 }
 
+.view-details-button {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: #4287f5;
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 3px;
+    margin-top: 10px;
+}
+
 /* Logout button styling */
 .logout-button {
     background-color: #ff4444; /* Red background for the button */
