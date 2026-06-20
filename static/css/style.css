@@ -5,12 +5,34 @@ body {
     font-family: Arial; /* Set Arial as the default font */
     background-color: #f0f0f0; /* Set a light grey background colour */
 }
+
 /* Header styling */
 .header {
-    background-color: #333; /* Dark background for the header*/
-    color: white; /* White text for contrast */
-    padding: 20px; /* Add padding inside the header */
-    margin-bottom: 20px; /* Add space below the header */
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-links {
+    display: flex;
+    gap: 10px;
+}
+
+/* Button for home page and recipe builder*/
+.nav-button {
+    background-color: #4287f5;
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 3px;
+    margin-right: 10px;
 }
 
 /* Logout button styling */

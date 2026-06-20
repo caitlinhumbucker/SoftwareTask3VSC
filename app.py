@@ -85,6 +85,13 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
+@app.route('/building') # Route for reciple building page, NOT FULLY COMPLETED
+def building():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    return render_template('building.html')
+
 @app.route('/add_entry', methods=[ 'POST' ])
 def add_entry():
     if 'user_id' not in session:

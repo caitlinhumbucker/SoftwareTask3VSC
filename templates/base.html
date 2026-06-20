@@ -26,15 +26,22 @@ filename='icons/favicon.png') }}">
 
 </head>
 <body>
-    <div class="header">
+    
+<div class="header">
+    <div class="header-top">
         <h1>IHeartFoood</h1>
-        {% if session.user_id %}
-        <div>
-            Hello, {{session.username}}
-            <a href="{{url_for('logout') }}" class="logout-button">Logout</a>
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}" class="nav-button">Home</a>
+            <a href="{{ url_for('building') }}" class="nav-button">Recipe Builder</a>
         </div>
-        {% endif %}
     </div>
+    {% if session.user_id %}
+    <div>
+        Hello, {{session.username}}
+        <a href="{{url_for('logout') }}" class="logout-button">Logout</a>
+    </div>
+    {% endif %}
+</div>
 
         <div class="main">
         {% with messages = get_flashed_messages(with_categories=true) %}
