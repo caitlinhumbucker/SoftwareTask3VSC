@@ -2,7 +2,7 @@
 {% block content %} 
 {% if session['user_id'] %}
 
-<h1 class="centered">Ingredients</h1>
+
 
 <!-- Search function for individual ingredients-->
 <div class="entry">
@@ -14,6 +14,8 @@
         <button type="submit">Search</button>
     </form>
 </div>
+
+<h1 class="centered">Ingredients</h1>
 
 <div class="entries-grid">
 {% for entry in entries %}

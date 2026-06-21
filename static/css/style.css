@@ -130,7 +130,11 @@ button {
     padding: 20px; /* Add padding inside the entry */
     margin-bottom: 20px; /* Add space below each entry */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adds a shadow for better visibility */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
+
 .entry img{
     max-width: 100%; /* Restricts the image to the container's width */
     max-height: 400px; /* Limits the height to 400px */
@@ -205,6 +209,7 @@ button {
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
     margin-top: 20px;
+    align-items: stretch;
 }
 
 .centered {
