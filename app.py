@@ -29,17 +29,29 @@ def get_db():
 def index():
     # Check if the user is logged in by verifying the session
     if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redirect if not authenticated
+        return redirect(url_for('login'))
 
-    # Get the search term from the URL, default to empty string if none provided
+    # Get the search term and sort option from the URL
     search_query = request.args.get('search', '')
+    current_sort = request.args.get('sort', 'newest')
+
+    # Only allow specific sort options to prevent SQL injection
+    allowed_sorts = {
+        'newest': 'created_at DESC',
+        'oldest': 'created_at ASC',
+        'expiry_soon': 'expiry_date ASC',
+        'expiry_far': 'expiry_date DESC'
+    }
+    order_by = allowed_sorts.get(current_sort, 'created_at DESC')
+
     db = get_db()
-    entries = db.execute('''
+    entries = db.execute(f'''
         SELECT * FROM entries
         WHERE user_id = ? AND title LIKE ?
-        ORDER BY created_at DESC
+        ORDER BY {order_by}
     ''', (session['user_id'], f"%{search_query}%")).fetchall()
-    return render_template('index.html', entries=entries, search_query=search_query)
+
+    return render_template('index.html', entries=entries, search_query=search_query, current_sort=current_sort)
            
 
 # Define the route for login functionality, supporting GET and POST methods
