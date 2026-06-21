@@ -224,3 +224,22 @@ button {
 .add-game-button button:hover {
     background-color: #0056b3;
 }
+/* styling for each ingredient page*/
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.stat-block h4 {
+    margin-bottom: 4px;
+    color: #333;
+}
+
+.stat-block p {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0;
+}

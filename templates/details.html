@@ -5,17 +5,46 @@
 <h1 class="centered">{{ entry.title }}</h1>
 
 <div class="entry">
-    <img src="{{ url_for('static', filename=entry.image_path) }}" alt="{{ entry.title }}">
-    <p>{{ entry.description }}</p>
-    <p>Quantity: {{ entry.quantity }}</p>
-    <p>Expiry Date: {{ entry.expiry_date }}</p>
-    <p>Calories: {{ entry.calories }}</p>
-    <p>Protein: {{ entry.protein }}g</p>
-    <p>Sugar: {{ entry.sugar }}g</p>
-    <p>Sodium: {{ entry.sodium }}mg</p>
-    <p>Saturated Fat: {{ entry.saturated_fat }}g</p>
+<img src="{{ url_for('static', filename=entry.image_path) }}" alt="{{ entry.title }}">
+<!-- displays each ingedients information-->
+<p>{{ entry.description }}</p>
 
-    <a href="{{ url_for('index') }}" class="nav-button">Back</a>
+<div class="stats-grid">
+    <div class="stat-block">
+        <h4>Quantity</h4>
+        <p>{{ entry.quantity }}</p>
+    </div>
+    <div class="stat-block">
+        <h4>Expiry Date</h4>
+        <p>{{ entry.expiry_date }}</p>
+    </div>
+    <div class="stat-block">
+        <h4>Calories</h4>
+        <p>{{ entry.calories }}</p>
+    </div>
+    <div class="stat-block">
+        <h4>Protein</h4>
+        <p>{{ entry.protein }}g</p>
+    </div>
+    <div class="stat-block">
+        <h4>Sugar</h4>
+        <p>{{ entry.sugar }}g</p>
+    </div>
+    <div class="stat-block">
+        <h4>Sodium</h4>
+        <p>{{ entry.sodium }}mg</p>
+    </div>
+    <div class="stat-block">
+        <h4>Saturated Fat</h4>
+        <p>{{ entry.saturated_fat }}g</p>
+    </div>
+    <div class="stat-block">
+        <h4>Nutritional Score</h4>
+        <p>{{ entry.nutrional_score }}/5</p>
+    </div>
+</div>
+
+<a href="{{ url_for('index') }}" class="nav-button">Back</a>
 </div>
 
 {% endif %}
