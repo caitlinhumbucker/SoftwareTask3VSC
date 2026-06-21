@@ -14,6 +14,18 @@ body {
     margin-bottom: 20px;
 }
 
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.sort-form select {
+    width: auto;
+    padding: 6px 10px;
+}
+
 .header-top {
     display: flex;
     justify-content: space-between;

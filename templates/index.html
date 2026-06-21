@@ -15,7 +15,19 @@
     </form>
 </div>
 
-<h1 class="centered">Ingredients</h1>
+<div class="page-header">
+    <h1>Ingredients</h1>
+    <form method="get" action="{{ url_for('index') }}" class="sort-form">
+        <label for="sort">Sort by:</label>
+        <select name="sort" id="sort" onchange="this.form.submit()">
+            <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>Newest First</option>
+            <option value="oldest" {% if current_sort == 'oldest' %}selected{% endif %}>Oldest First</option>
+            <option value="expiry_soon" {% if current_sort == 'expiry_soon' %}selected{% endif %}>Expiring Soon</option>
+            <option value="expiry_far" {% if current_sort == 'expiry_far' %}selected{% endif %}>Expiring Latest</option>
+        </select>
+        <input type="hidden" name="search" value="{{ search_query }}">
+    </form>
+</div>
 
 <div class="entries-grid">
 {% for entry in entries %}
