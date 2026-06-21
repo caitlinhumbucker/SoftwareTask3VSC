@@ -4,6 +4,17 @@
 
 <h1 class="centered">Ingredients</h1>
 
+<!-- Search function for individual ingredients-->
+<div class="entry">
+    <form method="get" action="{{ url_for('index') }}">
+        <div>
+            <label for="search">Search Ingredients:</label>
+            <input type="text" id="search" name="search" placeholder="Search by title..." value="{{ search_query }}">
+        </div>
+        <button type="submit">Search</button>
+    </form>
+</div>
+
 <div class="entries-grid">
 {% for entry in entries %}
 

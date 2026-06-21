@@ -30,14 +30,16 @@ def index():
     # Check if the user is logged in by verifying the session
     if 'user_id' not in session:
         return redirect(url_for('login'))  # Redirect if not authenticated
-    db=get_db()
-    entries=db.execute('''
-        SELECT * FROM ENTRIES
-        WHERE user_id = ?
-        ORDER BY created_at DESC
-    ''', (session['user_id'],)).fetchall()
 
-    return render_template('index.html',entries=entries)
+    # Get the search term from the URL, default to empty string if none provided
+    search_query = request.args.get('search', '')
+    db = get_db()
+    entries = db.execute('''
+        SELECT * FROM entries
+        WHERE user_id = ? AND title LIKE ?
+        ORDER BY created_at DESC
+    ''', (session['user_id'], f"%{search_query}%")).fetchall()
+    return render_template('index.html', entries=entries, search_query=search_query)
            
 
 # Define the route for login functionality, supporting GET and POST methods
