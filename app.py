@@ -94,6 +94,7 @@ def register():
             
     return render_template('register.html')
 
+# Clears session when user attempts to log out
 @app.route('/logout')
 def logout():
     session.clear()
@@ -108,10 +109,10 @@ def building():
 
 @app.route('/add_entry', methods=['POST'])
 def add_entry():
-    if 'user_id' not in session:
+    if 'user_id' not in session: # Ensures that users cannot make an entry when logged out
         return redirect(url_for('login'))
     
-    if 'image' not in request.files:
+    if 'image' not in request.files: # Ensures the users uploads a photo when creating an entry
         flash('No image uploaded', 'error')
         return redirect(url_for('index'))
     
@@ -153,10 +154,12 @@ def add_entry():
     else:
         flash('Invalid file type', 'error')
         return redirect(url_for('index'))
+#Returns a response once recognises user is offline
 @app.route('/offline')
 def offline():
     response = make_response(render_template('offline.html'))
     return response
+
 # Define the route for the service worker
 @app.route('/service-worker.js')
 def sw():

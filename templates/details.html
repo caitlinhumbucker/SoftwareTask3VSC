@@ -1,51 +1,131 @@
 {% extends "base.html" %} 
 {% block content %} 
 {% if session['user_id'] %}
-
 <h1 class="centered">{{ entry.title }}</h1>
 
 <div class="entry">
-<img src="{{ url_for('static', filename=entry.image_path) }}" alt="{{ entry.title }}">
-<!-- displays each ingedients information-->
-<p>{{ entry.description }}</p>
 
-<div class="stats-grid">
-    <div class="stat-block">
-        <h4>Quantity</h4>
-        <p>{{ entry.quantity }}</p>
-    </div>
-    <div class="stat-block">
-        <h4>Expiry Date</h4>
-        <p>{{ entry.expiry_date }}</p>
-    </div>
-    <div class="stat-block">
-        <h4>Calories</h4>
-        <p>{{ entry.calories }}</p>
-    </div>
-    <div class="stat-block">
-        <h4>Protein</h4>
-        <p>{{ entry.protein }}g</p>
-    </div>
-    <div class="stat-block">
-        <h4>Sugar</h4>
-        <p>{{ entry.sugar }}g</p>
-    </div>
-    <div class="stat-block">
-        <h4>Sodium</h4>
-        <p>{{ entry.sodium }}mg</p>
-    </div>
-    <div class="stat-block">
-        <h4>Saturated Fat</h4>
-        <p>{{ entry.saturated_fat }}g</p>
-    </div>
-    <div class="stat-block">
-        <h4>Nutritional Score</h4>
-        <p>{{ entry.nutrional_score }}/5</p>
-    </div>
-</div>
+    <div id="display-{{ entry.id }}">
+        <img src="{{ url_for('static', filename=entry.image_path) }}" alt="{{ entry.title }}">
+        <!-- displays each ingredients information-->
+        <p>{{ entry.description }}</p>
 
-<a href="{{ url_for('index') }}" class="nav-button">Back</a>
+        <div class="stats-grid">
+            <div class="stat-block">
+                <h4>Quantity</h4>
+                <p>{{ entry.quantity }}</p>
+            </div>
+            <div class="stat-block">
+                <h4>Expiry Date</h4>
+                <p>{{ entry.expiry_date }}</p>
+            </div>
+            <div class="stat-block">
+                <h4>Calories</h4>
+                <p>{{ entry.calories }}</p>
+            </div>
+            <div class="stat-block">
+                <h4>Protein</h4>
+                <p>{{ entry.protein }}g</p>
+            </div>
+            <div class="stat-block">
+                <h4>Sugar</h4>
+                <p>{{ entry.sugar }}g</p>
+            </div>
+            <div class="stat-block">
+                <h4>Sodium</h4>
+                <p>{{ entry.sodium }}mg</p>
+            </div>
+            <div class="stat-block">
+                <h4>Saturated Fat</h4>
+                <p>{{ entry.saturated_fat }}g</p>
+            </div>
+            <div class="stat-block">
+                <h4>Nutritional Score</h4>
+                <p>{{ entry.nutrional_score }}/5</p>
+            </div>
+        </div>
+
+        <div class="entry-footer">
+            <a href="{{ url_for('index') }}" class="nav-button">Back</a>
+            <button class="icon-button" onclick="showEditForm('{{ entry.id }}')" title="Edit entry">
+                <img src="{{ url_for('static', filename='icons/icon-edit-64x64.png') }}" alt="Edit" class="icon">
+            </button>
+        </div>
+    </div>
+
+    <!-- Edit form (hidden by default) -->
+    <div id="edit-{{ entry.id }}" style="display: none;">
+        <form action="{{ url_for('edit_entry', entry_id=entry.id) }}" method="post" enctype="multipart/form-data">
+
+            <div>
+                <label for="edit-title-{{ entry.id }}">Title:</label>
+                <input type="text" id="edit-title-{{ entry.id }}" name="title" value="{{ entry.title }}" required>
+            </div>
+
+            <div>
+                <label for="edit-description-{{ entry.id }}">Description:</label>
+                <textarea id="edit-description-{{ entry.id }}" name="description" required>{{ entry.description }}</textarea>
+            </div>
+
+            <div>
+                <label for="edit-quantity-{{ entry.id }}">Quantity:</label>
+                <input type="number" id="edit-quantity-{{ entry.id }}" name="quantity" value="{{ entry.quantity }}" step="0.1">
+            </div>
+
+            <div>
+                <label for="edit-expiry-{{ entry.id }}">Expiry Date:</label>
+                <input type="date" id="edit-expiry-{{ entry.id }}" name="expiry_date" value="{{ entry.expiry_date }}">
+            </div>
+
+            <div>
+                <label for="edit-calories-{{ entry.id }}">Calories:</label>
+                <input type="number" id="edit-calories-{{ entry.id }}" name="calories" value="{{ entry.calories }}" step="0.1">
+            </div>
+
+            <div>
+                <label for="edit-protein-{{ entry.id }}">Protein (g):</label>
+                <input type="number" id="edit-protein-{{ entry.id }}" name="protein" value="{{ entry.protein }}" step="0.1">
+            </div>
+
+            <div>
+                <label for="edit-sugar-{{ entry.id }}">Sugar (g):</label>
+                <input type="number" id="edit-sugar-{{ entry.id }}" name="sugar" value="{{ entry.sugar }}" step="0.1">
+            </div>
+
+            <div>
+                <label for="edit-sodium-{{ entry.id }}">Sodium (mg):</label>
+                <input type="number" id="edit-sodium-{{ entry.id }}" name="sodium" value="{{ entry.sodium }}" step="0.1">
+            </div>
+
+            <div>
+                <label for="edit-saturated-{{ entry.id }}">Saturated Fat (g):</label>
+                <input type="number" id="edit-saturated-{{ entry.id }}" name="saturated_fat" value="{{ entry.saturated_fat }}" step="0.1">
+            </div>
+
+            <div>
+                <label for="edit-image-{{ entry.id }}">New Photo (optional):</label>
+                <input type="file" id="edit-image-{{ entry.id }}" name="image" accept="image/*">
+            </div>
+
+            <button type="submit">Save Changes</button>
+            <button type="button" onclick="hideEditForm('{{ entry.id }}')">Cancel</button>
+
+        </form>
+    </div>
+
 </div>
+<!-- reuses the same show/hide toggle logic as the home page -->
+<script>
+function showEditForm(entryId) {
+    document.getElementById(`display-${entryId}`).style.display = 'none';
+    document.getElementById(`edit-${entryId}`).style.display = 'block';
+}
+
+function hideEditForm(entryId) {
+    document.getElementById(`display-${entryId}`).style.display = 'block';
+    document.getElementById(`edit-${entryId}`).style.display = 'none';
+}
+</script>
 
 {% endif %}
 {% endblock %}
