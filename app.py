@@ -24,6 +24,28 @@ def get_db():
     db.row_factory = sqlite3.Row
     return db
 
+# Calculates a nutritional quality score out of 5 based on protein vs sugar, sodium and saturated fat
+# calculate_nutrion_score function was entirely generated with AI, prompt: 'Create a function that gives an ingredient a healthiness score out of 5. I have values for calories, protein, sugar, sodium and saturated fat, how would I turn these into a score?
+def calculate_nutrition_score(calories, protein, sugar, sodium, saturated_fat):
+    # Convert all inputs to float, defaulting to 0 if empty or missing
+    protein = float(protein) if protein else 0
+    sugar = float(sugar) if sugar else 0
+    sodium = float(sodium) if sodium else 0
+    saturated_fat = float(saturated_fat) if saturated_fat else 0
+
+    # Sodium is scaled down since it's measured in mg while others are in g
+    total = protein + sugar + (sodium / 100) + saturated_fat
+
+    # Avoid divide by zero if no nutritional values were entered
+    if total == 0:
+        return 0
+
+    score = 5 * (protein / total)
+
+    # Clamp the score between 0 and 5
+    score = max(0, min(5, score))
+    return round(score, 1)
+
 # Define the route for the homepage
 @app.route('/')
 def index():
@@ -87,7 +109,7 @@ def register():
                 (username, generate_password_hash(password))
             )
             db.commit()
-            flash('Registration suessful! Please log in.', 'success')
+            flash('Registration suceessful! Please log in.', 'success')
             return redirect(url_for('login'))
         except sqlite3.IntegrityError:
             flash("Username already exists!", "error")
@@ -126,14 +148,23 @@ def add_entry():
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(filepath)
 
+        # Calculate the nutrition score before saving to the database
+        nutrition_score = calculate_nutrition_score(
+            request.form.get('calories'),
+            request.form.get('protein'),
+            request.form.get('sugar'),
+            request.form.get('sodium'),
+            request.form.get('saturated_fat')
+        )
+
         db = get_db()
         db.execute('''
             INSERT INTO entries (
                 user_id, title, description, image_path,
                 quantity, expiry_date, calories, protein,
-                sugar, sodium, saturated_fat
+                sugar, sodium, saturated_fat, nutrition_score
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
             session['user_id'],
             request.form['title'],
@@ -145,7 +176,8 @@ def add_entry():
             request.form.get('protein'),
             request.form.get('sugar'),
             request.form.get('sodium'),
-            request.form.get('saturated_fat')
+            request.form.get('saturated_fat'),
+            nutrition_score
         ))
         db.commit()
         flash('Entry added successfully!', 'success')
@@ -154,6 +186,7 @@ def add_entry():
     else:
         flash('Invalid file type', 'error')
         return redirect(url_for('index'))
+    
 #Returns a response once recognises user is offline
 @app.route('/offline')
 def offline():
@@ -191,6 +224,15 @@ def edit_entry(entry_id):
     title = request.form['title']
     description = request.form['description']
 
+    # Recalculate the nutrition score using the updated values
+    nutrition_score = calculate_nutrition_score(
+        request.form.get('calories'),
+        request.form.get('protein'),
+        request.form.get('sugar'),
+        request.form.get('sodium'),
+        request.form.get('saturated_fat')
+    )
+
     # If new image uploaded
     if 'image' in request.files and request.files['image'].filename != '':
         file = request.files['image']
@@ -209,21 +251,41 @@ def edit_entry(entry_id):
 
             db.execute('''
                 UPDATE entries
-                SET title = ?, description = ?, image_path = ?
+                SET title = ?, description = ?, image_path = ?,
+                    quantity = ?, expiry_date = ?, calories = ?,
+                    protein = ?, sugar = ?, sodium = ?, saturated_fat = ?,
+                    nutrition_score = ?
                 WHERE id = ? AND user_id = ?
-            ''', (title, description, f"uploads/{filename}", entry_id, session['user_id']))
+            ''', (
+                title, description, f"uploads/{filename}",
+                request.form.get('quantity'), request.form.get('expiry_date'),
+                request.form.get('calories'), request.form.get('protein'),
+                request.form.get('sugar'), request.form.get('sodium'),
+                request.form.get('saturated_fat'), nutrition_score,
+                entry_id, session['user_id']
+            ))
 
         else:
             flash('Invalid file type', 'error')
             return redirect(url_for('index'))
 
-    # No new image → update only text
+    # No new image - update only text and nutritional fields
     else:
         db.execute('''
             UPDATE entries
-            SET title = ?, description = ?
+            SET title = ?, description = ?,
+                quantity = ?, expiry_date = ?, calories = ?,
+                protein = ?, sugar = ?, sodium = ?, saturated_fat = ?,
+                nutrition_score = ?
             WHERE id = ? AND user_id = ?
-        ''', (title, description, entry_id, session['user_id']))
+        ''', (
+            title, description,
+            request.form.get('quantity'), request.form.get('expiry_date'),
+            request.form.get('calories'), request.form.get('protein'),
+            request.form.get('sugar'), request.form.get('sodium'),
+            request.form.get('saturated_fat'), nutrition_score,
+            entry_id, session['user_id']
+        ))
 
     db.commit()
     flash('Entry updated successfully!', 'success')
