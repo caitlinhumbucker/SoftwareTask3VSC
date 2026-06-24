@@ -1,7 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="centered">Recipe Builder</h1>
-<p>build on this later.</p>
-{% endblock %}
+{% if session['user_id'] %}
+<h1 class="centered">Recipe Score Calculator</h1>
 
-<!-- placeholder for now, to get header to functino-->
+<div class="entry2">
+    <form method="post" action="{{ url_for('building') }}">
+        <label for="ingredients">Select Ingredients:</label>
+        <select name="ingredients" id="ingredients" multiple required>
+            {% for ingredient in ingredients %}
+            <option value="{{ ingredient.id }}" {% if ingredient.id|string in selected_ids %}selected{% endif %}>
+                {{ ingredient.title }} (Score: {{ ingredient.nutrition_score }})
+            </option>
+            {% endfor %}
+        </select>
+        <button type="submit">Calculate Score</button>
+    </form>
+
+    {% if average_score is not none %}
+    <div class="stats-grid">
+        <div class="stat-block">
+            <h4>Average Nutrition Score</h4>
+            <p>{{ average_score }}/5</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

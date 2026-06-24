@@ -122,13 +122,6 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
-@app.route('/building') # Route for reciple building page, NOT FULLY COMPLETED
-def building():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-    
-    return render_template('building.html')
-
 @app.route('/add_entry', methods=['POST'])
 def add_entry():
     if 'user_id' not in session: # Ensures that users cannot make an entry when logged out
@@ -205,6 +198,45 @@ def sw():
 @app.route('/manifest.json')
 def manifest():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'manifest.json')
+
+@app.route('/building', methods=['GET', 'POST'])
+def building():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    db = get_db()
+    # Get all ingredients belonging to this user, for the dropdown
+    ingredients = db.execute(
+        'SELECT id, title, nutrition_score, calories, protein, sugar, sodium, saturated_fat FROM entries WHERE user_id = ?',
+        (session['user_id'],)
+    ).fetchall()
+
+    average_score = None
+    selected_ids = []
+
+    if request.method == 'POST':
+        # Get the list of selected ingredient IDs from the form
+        selected_ids = request.form.getlist('ingredients')
+
+        if selected_ids: # Lines 221-236 are AI generated
+            # 2D array: each row is one ingredient's nutrient data
+            selected_data = db.execute(
+                f'''SELECT calories, protein, sugar, sodium, saturated_fat, nutrition_score 
+                    FROM entries WHERE id IN ({",".join("?" for _ in selected_ids)}) AND user_id = ?''',
+                (*selected_ids, session['user_id'])
+            ).fetchall()
+
+            nutrient_data = [
+                [row['calories'], row['protein'], row['sugar'], row['sodium'], row['saturated_fat'], row['nutrition_score']]
+                for row in selected_data
+            ]
+
+            # Average the nutrition_score column (index 5) across all selected ingredients
+            average_score = sum(row[5] for row in nutrient_data) / len(nutrient_data)
+            average_score = round(average_score, 1)
+
+    return render_template('building.html', ingredients=ingredients, average_score=average_score, selected_ids=selected_ids)
+
 
 @app.route('/edit_entry/<int:entry_id>', methods=['POST'])
 def edit_entry(entry_id):
