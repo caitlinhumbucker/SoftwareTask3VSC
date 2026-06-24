@@ -15,8 +15,11 @@
 
 <div class="page-header">
     <h1>Ingredients</h1>
+    
+    <!-- Sort ingredients form -->
     <form method="get" action="{{ url_for('index') }}" class="sort-form">
         <label for="sort">Sort by:</label>
+        <!-- Auto-submit when sort option changes -->
         <select name="sort" id="sort" onchange="this.form.submit()">
             <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>Newest First</option>
             <option value="oldest" {% if current_sort == 'oldest' %}selected{% endif %}>Oldest First</option>
@@ -41,10 +44,13 @@
         <div class="entry-footer">
             <span class="date">{{ entry.created_at }}</span>
             <div class="entry-actions">
+
+                <!-- Edit entry button -->
                 <button class="icon-button" onclick="showEditForm('{{ entry.id }}')" title="Edit entry">
                     <img src="{{ url_for('static', filename='icons/icon-edit-64x64.png') }}" alt="Edit" class="icon">
                 </button>
 
+                <!-- Delete entry form with confirmation -->
                 <form action="{{ url_for('delete_entry', entry_id=entry.id) }}" method="post" class="inline-form"
                       onsubmit="return confirm('Are you sure you want to delete this entry?');">
                     <button type="submit" class="icon-button" title="Delete entry">
@@ -56,7 +62,7 @@
     </div>
 </div> 
 
-<!-- Edit form (hidden by default) — now correctly inside loop #} -->
+<!-- Edit form (hidden by default) — correctly inside loop #} -->
 <div id="edit-{{ entry.id }}" style="display: none;">
     <form action="{{ url_for('edit_entry', entry_id=entry.id) }}" method="post" enctype="multipart/form-data">
 
@@ -85,7 +91,7 @@
 </div>
 
 <div class="entry">
-
+      <!-- Form for adding a new ingredient entry -->
     <form action="{{url_for('add_entry')}}" method="post" enctype="multipart/form-data">
         <div>
             <h1>Add Ingredient Entry</h1>
@@ -100,6 +106,7 @@
             <textarea id="description" name="description"></textarea>
         </div>
 
+        <!-- Ingredient details and nutrition information inputs -->
         <div>
             <label for="quantity">Quantity (per item):</label>
             <input type="number" id="quantity" name="quantity" step="0.1">
@@ -145,11 +152,13 @@
 </div>
 
 <script>
+/* Toggle edit mode for ingredient entries */
 function showEditForm(entryId) {
     document.getElementById(`display-${entryId}`).style.display = 'none';
     document.getElementById(`edit-${entryId}`).style.display = 'block';
 }
 
+/* Return to display mode from edit mode */
 function hideEditForm(entryId) {
     document.getElementById(`display-${entryId}`).style.display = 'block';
     document.getElementById(`edit-${entryId}`).style.display = 'none';
