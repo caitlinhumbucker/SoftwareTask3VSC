@@ -3,6 +3,7 @@
 {% if session['user_id'] %}
 <h1 class="centered">Recipe Score Calculator</h1>
 
+<!-- Ingredient selection and score calculation form -->
 <div class="entry2">
     <form method="post" action="{{ url_for('building') }}">
         <label for="ingredients">Select Ingredients:</label>
@@ -16,6 +17,7 @@
         <button type="submit">Calculate Score</button>
     </form>
 
+    <!-- Display calculated average score -->
     {% if average_score is not none %}
     <div class="stats-grid">
         <div class="stat-block">
