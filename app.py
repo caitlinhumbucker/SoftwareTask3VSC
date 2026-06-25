@@ -218,7 +218,7 @@ def building():
         # Get the list of selected ingredient IDs from the form
         selected_ids = request.form.getlist('ingredients')
 
-        if selected_ids: # Lines 221-236 are AI generated
+        if selected_ids: # Lines 221-233 are AI generated
             # 2D array: each row is one ingredient's nutrient data
             selected_data = db.execute(
                 f'''SELECT calories, protein, sugar, sodium, saturated_fat, nutrition_score 
