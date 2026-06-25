@@ -81,6 +81,12 @@
             <input type="file" id="edit-image-{{ entry.id }}" name="image" accept="image/*">
         </div>
 
+        <input type="hidden" name="calories" value="{{ entry.calories }}">
+    <input type="hidden" name="protein" value="{{ entry.protein }}">
+    <input type="hidden" name="sugar" value="{{ entry.sugar }}">
+    <input type="hidden" name="sodium" value="{{ entry.sodium }}">
+    <input type="hidden" name="saturated_fat" value="{{ entry.saturated_fat }}">
+
         <button type="submit">Save Changes</button>
         <button type="button" onclick="hideEditForm('{{ entry.id }}')">Cancel</button>
 
