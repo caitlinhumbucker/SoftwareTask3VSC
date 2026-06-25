@@ -82,10 +82,12 @@
         </div>
 
         <input type="hidden" name="calories" value="{{ entry.calories }}">
-    <input type="hidden" name="protein" value="{{ entry.protein }}">
-    <input type="hidden" name="sugar" value="{{ entry.sugar }}">
-    <input type="hidden" name="sodium" value="{{ entry.sodium }}">
-    <input type="hidden" name="saturated_fat" value="{{ entry.saturated_fat }}">
+        <input type="hidden" name="protein" value="{{ entry.protein }}">
+        <input type="hidden" name="sugar" value="{{ entry.sugar }}">
+        <input type="hidden" name="sodium" value="{{ entry.sodium }}">
+        <input type="hidden" name="saturated_fat" value="{{ entry.saturated_fat }}">
+        <input type="hidden" name="quantity" value="{{ entry.quantity }}">
+        <input type="hidden" name="expiry_date" value="{{ entry.expiry_date }}">
 
         <button type="submit">Save Changes</button>
         <button type="button" onclick="hideEditForm('{{ entry.id }}')">Cancel</button>
